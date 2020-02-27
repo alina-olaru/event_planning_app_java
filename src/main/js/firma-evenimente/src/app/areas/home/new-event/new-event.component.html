@@ -1,0 +1,1430 @@
+<div class="container" fxFlex fxLayout="column">
+  <h1 class="text-center">
+    Creeaza eveniment nou
+  </h1>
+  <mat-vertical-stepper [linear]="isLinear" #stepper>
+    <!-- date generale -->
+    <mat-step [stepControl]="dateGeneraleEvenimentFormGroup">
+      <form [formGroup]="dateGeneraleEvenimentFormGroup">
+        <ng-template matStepLabel>Date generale eveniment</ng-template>
+        <div fxFlex fxLayout="column">
+          <div fxFlex fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field fxFlex>
+              <input matInput [matDatepicker]="picker1" readonly placeholder="Data inceput*"
+                formControlName="data_inceput">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error *ngIf="dateGeneraleEvenimentFormGroupVal.data_inceput?.invalid">
+                Data de inceput este obligatorie
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <input matInput [matDatepicker]="picker2" readonly placeholder="Data sfarsit*"
+                formControlName="data_sfarsit">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error *ngIf="dateGeneraleEvenimentFormGroupVal.data_sfarsit?.invalid">
+                Data de sfarsit este obligatorie
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field fxFlex>
+              <textarea matInput placeholder="Mentiuni" formControlName="mentiuni"></textarea>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-button color="primary" (click)="CheckDaysAvailable()">Urmatorul pas</button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <!-- tipul de eveniment -->
+    <mat-step [stepControl]="tipDeEvenimentFormGroup">
+      <form [formGroup]="tipDeEvenimentFormGroup">
+        <ng-template matStepLabel>Tip eveniment</ng-template>
+        <div class="mt-3" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+            <div class="mb-3" *ngFor="let tipEv of tipEvenimente" fxFlex="24%">
+              <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column"
+                (click)="SelectTipEveniment(tipEv)"
+                [ngClass]="{'selected': tipEv == this.tipDeEvenimentFormGroupVal.tip_eveniment.value}">
+                <mat-card-header fxFlex fxLayoutAlign="center center">
+                  <mat-card-title>
+                    {{tipEv.nume_categorie_eveniment}}
+                  </mat-card-title>
+                </mat-card-header>
+                <img *ngIf="tipEv.imagine_tip_eveniment" mat-card-image [src]="tipEv.imagine_tip_eveniment_src"
+                  alt="Photo of event">
+              </mat-card>
+            </div>
+          </div>
+          <div>
+            <button mat-button type="button" color="warn" matStepperPrevious>Inapoi</button>
+            <button mat-button type="button" color="primary" (click)="CheckTipEveniment()">Urmatorul pas</button>
+            <!-- <mat-error *ngIf="tipDeEvenimentFormGroupVal.tip_eveniment?.valid">
+              Alege tipul de eveniment pentru a trece la pasul urmator!!
+            </mat-error> -->
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <!-- sub-tipul de eveniment -->
+    <mat-step [stepControl]="subTipDeEvenimentFormGroup">
+      <form [formGroup]="subTipDeEvenimentFormGroup">
+        <ng-template matStepLabel>Sub-tip eveniment</ng-template>
+        <div class="mt-3" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+            <div class="mb-3" *ngFor="let subTipEv of subTipEvenimente" fxFlex="24%">
+              <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column"
+                (click)="SelectSubTipEvenimient(subTipEv)"
+                [ngClass]="{'selected': subTipEv == this.subTipDeEvenimentFormGroupVal.sub_tip_eveniment.value}">
+                <mat-card-header fxFlex fxLayoutAlign="center center">
+                  <mat-card-title>
+                    {{subTipEv.nume_categorie_sub_eveniment}}
+                  </mat-card-title>
+                </mat-card-header>
+                <img *ngIf="subTipEv.imagine_sub_eveniment" mat-card-image [src]="subTipEv.imagine_sub_eveniment_src"
+                  alt="Photo of event">
+              </mat-card>
+            </div>
+          </div>
+          <div>
+            <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+            <button mat-button color="primary" (click)="CheckSubTipEveniment()">Urmatorul pas</button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <!-- Tipul de locatie -->
+    <mat-step [stepControl]="tipLocatiiFormGroup">
+      <form [formGroup]="tipLocatiiFormGroup">
+        <ng-template matStepLabel>Tip locatie</ng-template>
+        <div class="mt-3" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+            <div class="mb-3" *ngFor="let tipLoc of tipLocatii" fxFlex="24%">
+              <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column"
+                (click)="SelectTipLocatie(tipLoc)"
+                [ngClass]="{'selected': tipLoc == this.tipLocatiiFormGroupVal.tip_locatie.value}">
+                <mat-card-header fxFlex fxLayoutAlign="center center">
+                  <mat-card-title>
+                    {{tipLoc.nume_categorie_locatie}}
+                  </mat-card-title>
+                </mat-card-header>
+                <img *ngIf="tipLoc.imagine_tip_locatie" mat-card-image [src]="tipLoc.imagine_tip_locatie_src"
+                  alt="Photo of event">
+
+                <mat-card-content>
+                  {{tipLoc.descriere | truncate: 100}}
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button (click)="SeeDetailsTipLocatie(tipLoc)">
+                    Vezi toata descrierea
+                  </button>
+
+                </mat-card-actions>
+              </mat-card>
+            </div>
+          </div>
+          <div>
+            <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+            <button mat-button color="primary" (click)="CheckTipLocatie()">Urmatorul pas</button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <!-- Sub-locatie -->
+    <mat-step [stepControl]="subLocatiiFormGroup">
+      <form [formGroup]="subLocatiiFormGroup">
+        <ng-template matStepLabel>Tip locatie</ng-template>
+        <div class="mt-3" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+            <div class="mb-3" *ngFor="let subLoc of subLocatii" fxFlex="24%">
+              <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column"
+                (click)="SelectSubLocatie(subLoc)"
+                [ngClass]="{'selected': subLoc == this.subLocatiiFormGroupVal.sub_locatie.value}">
+                <mat-card-header fxFlex fxLayoutAlign="center center">
+                  <mat-card-title>
+                    {{subLoc.nume_categorie_tip_locatie}}
+                  </mat-card-title>
+                </mat-card-header>
+                <img *ngIf="subLoc.imagine_sub_locatie" mat-card-image [src]="subLoc.imagine_sub_locatie_src"
+                  alt="Photo of event">
+
+                <mat-card-content *ngIf="subLoc.anotimp_potrivit">
+                  <b>Anotimp potrivit: </b> {{subLoc.anotimp_potrivit}}
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div>
+            <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+            <button mat-button color="primary" (click)="CheckSubLocatie()">Urmatorul pas</button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <!-- Locatie -->
+    <mat-step [stepControl]="locatiiFormGroup">
+      <form [formGroup]="locatiiFormGroup">
+        <ng-template matStepLabel>Locatie</ng-template>
+        <div class="mt-3" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+            <div class="mb-3" *ngFor="let loc of locatii" fxFlex="24%">
+              <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column"
+                (click)="SelectLocatie(loc)" [ngClass]="{'selected': loc == this.locatiiFormGroupVal.locatie.value}">
+                <mat-card-header fxFlex fxLayoutAlign="center center">
+                  <mat-card-title>
+                    {{loc.nume_locatie}}
+                  </mat-card-title>
+                </mat-card-header>
+                <img *ngIf="loc.imagine_locatie" mat-card-image [src]="loc.imagine_locatie_src" alt="Photo of locatie">
+                <mat-card-content fxFlex fxLayout="column" fxLayoutGap="3px">
+                  <div fxFlex="100">
+                    <b>Tara:</b> {{loc.tara}}
+                  </div>
+                  <div fxFlex="100">
+                    <b>Oras:</b> {{loc.oras}}
+                  </div>
+                  <div fxFlex="100">
+                    <b>Strada:</b> {{loc.strada}}
+                  </div>
+                  <div fxFlex="100">
+                    <b>Adresa:</b> {{loc.adresa}}
+                  </div>
+                  <div fxFlex="100">
+                    <b>Dimensiune:</b> {{loc.dimensiune_mp}} mp.
+                  </div>
+                  <div fxFlex="100">
+                    <b>Capacitate maxima:</b> {{loc.capacitate_maxima}}
+                  </div>
+                  <div fxFlex="100">
+                    <b>Pret inchiriere 24h.:</b> {{loc.pret_inchiriere_per_24h}} lei
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div>
+            <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+            <button mat-button color="primary" (click)="CheckLocatie()">Urmatorul pas</button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <!-- Bautura -->
+    <mat-step>
+      <ng-template matStepLabel>Bautura eveniment (optional)</ng-template>
+      <div class="mt-3" fxFlex fxLayout="column">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="bauturaAccordionOpened == 1" (opened)="bauturaAccordionOpened = 1">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Bautura
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de bautura valabile.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+              <div class="mb-3" *ngFor="let baut of bautura" fxFlex="24%">
+                <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                  <mat-card-header fxFlex fxLayoutAlign="center center">
+                    <mat-card-title>
+                      {{baut.nume_bautura}}
+                    </mat-card-title>
+                  </mat-card-header>
+                  <img *ngIf="baut.imagine_bautura" mat-card-image [src]="baut.imagine_bautura_src"
+                    alt="Photo of locatie">
+                  <mat-card-content fxFlex fxLayout="column" fxLayoutGap="3px">
+                    <div fxFlex="100">
+                      <b>Gramaj:</b> {{baut.gramaj | number}} l.
+                    </div>
+                    <div fxFlex="100">
+                      <b>Pret per bucate:</b> {{baut.pret_pret_bucata | number}} lei
+                    </div>
+                    <div fxFlex="100">
+                      <b>Pret per bax (6 buc.):</b> {{baut.pret_per_bax | number}} lei
+                    </div>
+                  </mat-card-content>
+                  <mat-card-actions fxLayoutAlign="center center">
+                    <button mat-button color="primary" fxFlex (click)="AddBautura(baut)">
+                      Adauga
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="bauturaAccordionOpened == 2" (opened)="bauturaAccordionOpened = 2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Bautura selectata
+              </mat-panel-title>
+              <mat-panel-description>
+                Bautura selectata pentru evenimentul dumneavostra.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+
+              <table mat-table fxFlex [dataSource]="dataSourceBautura" matSort>
+
+                <ng-container matColumnDef="nume_bautura">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nume bautura </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.bautura.nume_bautura}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="gramaj">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Gramaj </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.bautura.gramaj}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pret_pret_bucata">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret per bucata </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.bautura.pret_pret_bucata | number}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pret_per_bax">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret per bax </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.bautura.pret_per_bax | number}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pret_vanzare">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret vanzare </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div *ngIf="!(element.bautura.id_bautura == editItemBautura?.bautura?.id_bautura)">
+                      {{element.pret_vanzare | number}}
+                    </div>
+                    <mat-form-field class="w-100"
+                      *ngIf="element.bautura.id_bautura == editItemBautura?.bautura?.id_bautura">
+                      <input matInput type="number" placeholder="Pret vanzare" [(ngModel)]="editItemBautura.pret_vanzare">
+                    </mat-form-field>
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cantitate">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cantitate </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div *ngIf="!(element.bautura.id_bautura == editItemBautura?.bautura?.id_bautura)">
+                      {{element.cantitate | number}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.bautura.id_bautura == editItemBautura?.bautura?.id_bautura">
+                      <input matInput type="number" placeholder="Cantitate*" [(ngModel)]="editItemBautura.cantitate">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cost_total">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost total </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.cost_total | number}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+                    <div *ngIf="!(element.bautura.id_bautura == editItemBautura?.bautura?.id_bautura)">
+                      <button mat-button color="warn" (click)="DeleteBauturaEveniment(element)" matTooltip="Sterge">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="EditBauturaEveniment(element)" matTooltip="Editeaza">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                    <div *ngIf="element.bautura.id_bautura == editItemBautura?.bautura?.id_bautura">
+                      <button mat-button color="warn" (click)="RenuntaEditBautura(element)" matTooltip="Renunta">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="ConfirmEditBautura()" matTooltip="Salveaza">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row mat-header-row *matHeaderRowDef="displayedColumnsBautura"></mat-header-row>
+                <mat-row mat-row *matRowDef="let row; columns: displayedColumnsBautura;"></mat-row>
+
+
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+        <div>
+          <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+          <button mat-button color="primary" (click)="CheckBautura()">Urmatorul pas</button>
+        </div>
+      </div>
+    </mat-step>
+    <!-- Elemente design -->
+    <mat-step>
+      <ng-template matStepLabel>Elemente design eveniment (optional)</ng-template>
+      <div class="mt-3" fxFlex fxLayout="column">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="elementeDesignAccordionOpened == 1"
+            (opened)="elementeDesignAccordionOpened = 1">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Elemente de design
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de elemente de design valabile.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+              <div class="mb-3" *ngFor="let elem of elementeDesign" fxFlex="24%">
+                <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                  <mat-card-header fxFlex fxLayoutAlign="center center">
+                    <mat-card-title>
+                      {{elem.nume_element}}
+                    </mat-card-title>
+                  </mat-card-header>
+                  <img *ngIf="elem.imagine_element_design" mat-card-image [src]="elem.imagine_element_design_src"
+                    alt="Photo of locatie">
+                  <mat-card-content fxFlex fxLayout="column" fxLayoutGap="3px">
+                    <div fxFlex="100">
+                      <b>Culoare:</b> {{elem.culoare}}
+                    </div>
+                    <div fxFlex="100">
+                      <b>Dimensiuni:</b> {{elem.dimensiuni}}
+                    </div>
+                    <div fxFlex="100">
+                      <b>Cantitati per element</b> {{elem.cantitate | number}}
+                    </div>
+                    <div fxFlex="100">
+                      <b>Pret per element</b> {{elem.pret_per_element | number}} lei
+                    </div>
+                    <div fxFlex="100" *ngIf="elem.discount">
+                      <b>Discount</b> {{elem.discount | number}}%
+                    </div>
+                    <div fxFlex="100" *ngIf="elem.discount">
+                      <b>Numar minim elemente reducere</b> {{elem.numar_minim_elemente_pentru_reducere | number}} buc
+                    </div>
+                  </mat-card-content>
+                  <mat-card-actions fxLayoutAlign="center center">
+                    <button mat-button color="primary" fxFlex (click)="AddElementeDesign(elem)">
+                      Adauga
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="elementeDesignAccordionOpened == 2"
+            (opened)="elementeDesignAccordionOpened = 2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Elemente de design selectate
+              </mat-panel-title>
+              <mat-panel-description>
+                Elemente de design selectate pentru evenimentul dumneavostra.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+
+              <table mat-table fxFlex [dataSource]="dataSourceElementeDesign" matSort>
+
+                <ng-container matColumnDef="nume_element">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nume element </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.elementeDesign.nume_element}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cantitate_element">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cantitati per element
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.elementeDesign.cantitate}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pret_per_element">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret per element </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.elementeDesign.pret_per_element | number}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="discount">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Discount </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.elementeDesign.discount | number}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="numar_minim_elemente_pentru_reducere">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nr. minim elem. discount
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.elementeDesign.numar_minim_elemente_pentru_reducere | number}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cantitate">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cantitate </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.elementeDesign.id_element_design == editItemElementeDesign?.elementeDesign?.id_element_design)">
+                      {{element.cantitate | number}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.elementeDesign.id_element_design == editItemElementeDesign?.elementeDesign?.id_element_design">
+                      <input matInput type="number" placeholder="Cantitate*"
+                        [(ngModel)]="editItemElementeDesign.cantitate">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cost_total">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost total </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.cost_total | number}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+                    <div
+                      *ngIf="!(element.elementeDesign.id_element_design == editItemElementeDesign?.elementeDesign?.id_element_design)">
+                      <button mat-button color="warn" (click)="DeleteElementeDesignEveniment(element)"
+                        matTooltip="Sterge">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="EditElementeDesignEveniment(element)"
+                        matTooltip="Editeaza">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                    <div
+                      *ngIf="element.elementeDesign.id_element_design == editItemElementeDesign?.elementeDesign?.id_element_design">
+                      <button mat-button color="warn" (click)="RenuntaEditElementeDesign(element)" matTooltip="Renunta">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="ConfirmEditElementeDesign()" matTooltip="Salveaza">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row mat-header-row *matHeaderRowDef="displayedColumnsElementeDesign"></mat-header-row>
+                <mat-row mat-row *matRowDef="let row; columns: displayedColumnsElementeDesign;"></mat-row>
+
+
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+        <div>
+          <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+          <button mat-button color="primary" (click)="CheckElementeDesign()">Urmatorul pas</button>
+        </div>
+      </div>
+    </mat-step>
+    <!-- Momente artistice -->
+    <mat-step>
+      <ng-template matStepLabel>Momente artistice (optional)</ng-template>
+      <div class="mt-3" fxFlex fxLayout="column">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="momenteArtisticeAccordionOpened == 1"
+            (opened)="momenteArtisticeAccordionOpened = 1">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Tip momente artistice
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de momente artistice - filtrare momente artistice
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+              <div class="mb-3" *ngFor="let elem of tipMomentArtistic" fxFlex="24%">
+                <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                  <mat-card-header fxFlex fxLayoutAlign="center center">
+                    <mat-card-title>
+                      {{elem.nume_categorie_moment_artistic}}
+                    </mat-card-title>
+                  </mat-card-header>
+                  <img *ngIf="elem.imagine_tip_moment_artistic" mat-card-image
+                    [src]="elem.imagine_tip_moment_artistic_src" alt="Photo of locatie">
+                  <mat-card-actions fxLayoutAlign="center center">
+                    <button mat-button color="primary" fxFlex (click)="SelectTipMomentArtistic(elem)">
+                      Filtreaza
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="momenteArtisticeAccordionOpened == 2"
+            (opened)="momenteArtisticeAccordionOpened = 2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Momente artistice
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate momentele artistice valabile.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxFlex fxLayout="column">
+              <div fxFlex>
+                <h1 class="text-center">
+                  Tip moment artistic: {{tipMomentArtisticSelected.nume_categorie_moment_artistic}}
+                </h1>
+              </div>
+              <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+                <div class="mb-3" *ngFor="let elem of momenteArtistice" fxFlex="24%">
+                  <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                    <mat-card-header fxFlex fxLayoutAlign="center center">
+                      <mat-card-title>
+                        {{elem.nume_tip_moment_artistic}}
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content fxFlex fxLayout="column" fxLayoutGap="3px">
+                      <div fxFlex="100">
+                        <b>Categorie:</b> {{elem.nume_categorie_moment_artistic}}
+                      </div>
+                      <div fxFlex="100">
+                        <b>Durata moment:</b> {{elem.timp_moment}} minute
+                      </div>
+                      <div fxFlex="100">
+                        <b>Pret</b> {{elem.pret_per_moment | number}}
+                      </div>
+                      <div fxFlex="100">
+                        <b>Numar persoane implicate</b> {{elem.numar_persoane_implicate | number}}
+                      </div>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="center center">
+                      <button mat-button color="primary" fxFlex (click)="AddMomenteArtistice(elem)">
+                        Adauga
+                      </button>
+                    </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="momenteArtisticeAccordionOpened == 3"
+            (opened)="momenteArtisticeAccordionOpened = 3">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Momente artistice selectate
+              </mat-panel-title>
+              <mat-panel-description>
+                Momente artistice selectate pentru evenimentul dumneavostra.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+
+              <table mat-table fxFlex [dataSource]="dataSourceMomenteArtistice" matSort>
+
+                <ng-container matColumnDef="nume_tip_moment_artistic">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nume moment </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.momenteArtistice.nume_tip_moment_artistic}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="nume_categorie_moment_artistic">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nume categorie </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.momenteArtistice.nume_categorie_moment_artistic}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="timp_moment">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Durata moment
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.momenteArtistice.timp_moment}} min.
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pret_per_moment">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret per moment </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.momenteArtistice.pret_per_moment | number}} lei
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="numar_persoane_implicate">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Numar persoane implicate
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.momenteArtistice.numar_persoane_implicate | number}}
+                  </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="ora_inceput">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Ora inceput </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.momenteArtistice.id_moment_artistic == editItemMomenteArtistice?.momenteArtistice?.id_moment_artistic)">
+                      {{element.ora_inceput | date: 'HH:mm'}}
+                    </div>
+
+                    <div class="w-100"
+                      *ngIf="element.momenteArtistice.id_moment_artistic == editItemMomenteArtistice?.momenteArtistice?.id_moment_artistic">
+                      <mat-form-field>
+                        <input [ngxTimepicker]="picker" matInput placeholder="Ora inceput*" [format]="24"
+                          [(ngModel)]="editItemMomenteArtistice.ora_inceput">
+                        <ngx-material-timepicker #picker></ngx-material-timepicker>
+                      </mat-form-field>
+                    </div>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ora_sfarsit">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Ora sfarsit </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.ora_sfarsit | date: 'HH:mm'}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+                    <div
+                      *ngIf="!(element.momenteArtistice.id_moment_artistic == editItemMomenteArtistice?.momenteArtistice?.id_moment_artistic)">
+                      <button mat-button color="warn" (click)="DeleteMomenteArtisticeEveniment(element)"
+                        matTooltip="Sterge">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="EditMomenteArtisticeEveniment(element)"
+                        matTooltip="Editeaza">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                    <div
+                      *ngIf="element.momenteArtistice.id_moment_artistic == editItemMomenteArtistice?.momenteArtistice?.id_moment_artistic">
+                      <button mat-button color="warn" (click)="RenuntaEditMomenteArtistice(element)" matTooltip="Renunta">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="ConfirmEditMomenteArtistice()" matTooltip="Salveaza">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row mat-header-row *matHeaderRowDef="displayedColumnsMomenteArtistice"></mat-header-row>
+                <mat-row mat-row *matRowDef="let row; columns: displayedColumnsMomenteArtistice;"></mat-row>
+
+
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+        <div>
+          <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+          <button mat-button color="primary" (click)="CheckMomenteArtistice()">Urmatorul pas</button>
+        </div>
+      </div>
+    </mat-step>
+
+    <!-- Media -->
+    <mat-step>
+      <ng-template matStepLabel>Media (optional)</ng-template>
+      <div class="mt-3" fxFlex fxLayout="column">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="mediaAccordionOpened == 1" (opened)="mediaAccordionOpened = 1">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Tip media
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de media - filtrare media
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+              <div class="mb-3" *ngFor="let elem of tipMedia" fxFlex="24%">
+                <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                  <mat-card-header fxFlex fxLayoutAlign="center center">
+                    <mat-card-title>
+                      {{elem.nume_media}}
+                    </mat-card-title>
+                  </mat-card-header>
+                  <img *ngIf="elem.imagine_tip_media" mat-card-image [src]="elem.imagine_tip_media_src"
+                    alt="Photo of locatie">
+                  <mat-card-actions fxLayoutAlign="center center">
+                    <button mat-button color="primary" fxFlex (click)="SelectTipMedia(elem)">
+                      Filtreaza
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="mediaAccordionOpened == 2" (opened)="mediaAccordionOpened = 2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Media
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate elementele media valabile.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxFlex fxLayout="column">
+              <div fxFlex>
+                <h1 class="text-center">
+                  Tip media: {{tipMediaSelected.nume_media}}
+                </h1>
+              </div>
+              <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+                <div class="mb-3" *ngFor="let elem of media" fxFlex="24%">
+                  <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                    <mat-card-header fxFlex fxLayoutAlign="center center">
+                      <mat-card-title>
+                        {{elem.denumire}}
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content fxFlex fxLayout="column" fxLayoutGap="3px">
+                      <div fxFlex="100">
+                        <b>Categorie:</b> {{elem.nume_media}}
+                      </div>
+                      <div fxFlex="100">
+                        <b>Pret:</b> {{elem.pret | number}} lei
+                      </div>
+                      <div fxFlex="100" matTooltip="{{elem.descriere}}" *ngIf="elem.descriere">
+                        <b>Descriere</b> {{elem.descriere | truncate:100}}
+                      </div>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="center center">
+                      <button mat-button color="primary" fxFlex (click)="AddMedia(elem)">
+                        Adauga
+                      </button>
+                    </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="mediaAccordionOpened == 3" (opened)="mediaAccordionOpened = 3">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Elemente media selectate
+              </mat-panel-title>
+              <mat-panel-description>
+                Elemente media selectate pentru evenimentul dumneavostra.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+
+              <table mat-table fxFlex [dataSource]="dataSourceMedia" matSort>
+
+                <ng-container matColumnDef="denumire">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nume element media </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.media.denumire}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="nume_media">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Tip media </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.media.nume_media}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pret">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.media.pret | number}} lei
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cantitate">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cantitate </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div *ngIf="!(element.media.id_media == editItemMedia?.media?.id_media)">
+                      {{element.cantitate | number}}
+                    </div>
+
+                    <mat-form-field class="w-100" *ngIf="element.media.id_media == editItemMedia?.media?.id_media">
+                      <input matInput type="number" placeholder="Cantitate*" [(ngModel)]="editItemMedia.cantitate">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cost_total">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost total </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.cost_total | number}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+                    <div *ngIf="!(element.media.id_media == editItemMedia?.media?.id_media)">
+                      <button mat-button color="warn" (click)="DeleteMediaEveniment(element)" matTooltip="Sterge">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="EditMediaEveniment(element)" matTooltip="Editeaza">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                    <div *ngIf="element.media.id_media == editItemMedia?.media?.id_media">
+                      <button mat-button color="warn" (click)="RenuntaEditMedia(element)" matTooltip="Renunta">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="ConfirmEditMedia()" matTooltip="Salveaza">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row mat-header-row *matHeaderRowDef="displayedColumnsMedia"></mat-header-row>
+                <mat-row mat-row *matRowDef="let row; columns: displayedColumnsMedia;"></mat-row>
+
+
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+        <div>
+          <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+          <button mat-button color="primary" (click)="CheckMedia()">Urmatorul pas</button>
+        </div>
+      </div>
+    </mat-step>
+
+
+    <!-- Tip meniu -->
+    <mat-step>
+      <ng-template matStepLabel>Tip meniu (optional)</ng-template>
+      <div class="mt-3" fxFlex fxLayout="column">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="tipMeniuAccordionOpened == 1" (opened)="tipMeniuAccordionOpened = 1">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Tip servire meniu
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de servire meniu - filtrare tip meniu
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+              <div class="mb-3" *ngFor="let elem of tipServireMeniu" fxFlex="24%">
+                <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                  <mat-card-header fxFlex fxLayoutAlign="center center">
+                    <mat-card-title>
+                      {{elem.denumire_tip_servire}}
+                    </mat-card-title>
+                  </mat-card-header>
+                  <img *ngIf="elem.imagine_tip_servire" mat-card-image [src]="elem.imagine_tip_servire_src"
+                    alt="Photo of locatie">
+                  <mat-card-actions fxLayoutAlign="center center">
+                    <button mat-button color="primary" fxFlex (click)="SelectTipServireMeniu(elem)">
+                      Filtreaza
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="tipMeniuAccordionOpened == 2" (opened)="tipMeniuAccordionOpened = 2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Tip meniu
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de meniu valabile.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxFlex fxLayout="column">
+              <div fxFlex>
+                <h1 class="text-center">
+                  Tip servire meniu: {{tipServireMeniuSelected.denumire_tip_servire}}
+                </h1>
+              </div>
+              <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+                <div class="mb-3" *ngFor="let elem of tipMeniu" fxFlex="24%">
+                  <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                    <mat-card-header fxFlex fxLayoutAlign="center center">
+                      <mat-card-title>
+                        {{elem.nume_meniu}}
+                      </mat-card-title>
+                    </mat-card-header>
+                    <img *ngIf="elem.imagine_meniu" mat-card-image [src]="elem.imagine_meniu_src" alt="Photo of locatie">
+                    <mat-card-content fxFlex fxLayout="column" fxLayoutGap="3px">
+                      <div fxFlex="100">
+                        <b>Categorie:</b> {{elem.denumire_tip_servire}}
+                      </div>
+                      <div fxFlex="100">
+                        <b>Clienti tinta:</b> {{elem.clienti_targetati}}
+                      </div>
+                      <div fxFlex="100">
+                        <b>Pret:</b> {{elem.cost_tip_meniu | number}} lei
+                      </div>
+                      <div fxFlex="100" *ngIf="elem.reducere">
+                        <b>Reducere:</b> {{elem.reducere | number}}%
+                      </div>
+                      <div fxFlex="100" *ngIf="elem.minim_portii_pentru_reducere">
+                        <b>Minim portii pt. reducere:</b> {{elem.minim_portii_pentru_reducere | number}}
+                      </div>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="center center" fxLayout="column">
+                      <button mat-button color="primary" fxFlex (click)="AddTipMeniu(elem)">
+                        Adauga
+                      </button>
+                      <button mat-button color="warn" fxFlex (click)="AddTipMeniu(elem)">
+                        Vezi componenta
+                      </button>
+                    </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="tipMeniuAccordionOpened == 3" (opened)="tipMeniuAccordionOpened = 3">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Tipuri meniu selectate
+              </mat-panel-title>
+              <mat-panel-description>
+                Tipuri meniu selectate pentru evenimentul dumneavostra.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+
+              <table mat-table fxFlex [dataSource]="dataSourceTipMeniu" matSort>
+
+                <ng-container matColumnDef="nume_meniu">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Denumire </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.tipMeniu.nume_meniu}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="denumire_tip_servire">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Tip servire </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.tipMeniu.denumire_tip_servire}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cost_tip_meniu">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.tipMeniu.cost_tip_meniu | number}} lei
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="reducere">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Reducere </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.tipMeniu.reducere | number}}%
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="minim_portii_pentru_reducere">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Minim portii reducere
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.tipMeniu.minim_portii_pentru_reducere | number}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cantitate_tip_meniu">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cantitate </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div *ngIf="!(element.tipMeniu.id_tip_meniu == editItemTipMeniu?.tipMeniu?.id_tip_meniu)">
+                      {{element.cantitate_tip_meniu | number}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.tipMeniu.id_tip_meniu == editItemTipMeniu?.tipMeniu?.id_tip_meniu">
+                      <input matInput type="number" placeholder="Cantitate*"
+                        [(ngModel)]="editItemTipMeniu.cantitate_tip_meniu">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cost_total">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost total </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.cost_total | number}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+                    <div *ngIf="!(element.tipMeniu.id_tip_meniu == editItemTipMeniu?.tipMeniu?.id_tip_meniu)">
+                      <button mat-button color="warn" (click)="DeleteTipMeniuEveniment(element)" matTooltip="Sterge">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="EditTipMeniuEveniment(element)" matTooltip="Editeaza">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                    <div *ngIf="element.tipMeniu.id_tip_meniu == editItemTipMeniu?.tipMeniu?.id_tip_meniu">
+                      <button mat-button color="warn" (click)="RenuntaEditTipMeniu(element)" matTooltip="Renunta">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="ConfirmEditTipMeniu()" matTooltip="Salveaza">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row mat-header-row *matHeaderRowDef="displayedColumnsTipMeniu"></mat-header-row>
+                <mat-row mat-row *matRowDef="let row; columns: displayedColumnsTipMeniu;"></mat-row>
+
+
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+        <div>
+          <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+          <button mat-button color="primary" (click)="CheckTipMeniu()">Urmatorul pas</button>
+        </div>
+      </div>
+    </mat-step>
+
+
+    <!-- Tip acces -->
+    <mat-step>
+      <ng-template matStepLabel>Tip acces (optional)</ng-template>
+      <div class="mt-3" fxFlex fxLayout="column">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="configurariTipAccesAccordionOpened == 1"
+            (opened)="configurariTipAccesAccordionOpened = 1">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Tip acces
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de acces - configurare tip acces
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+              <div class="mb-3" *ngFor="let elem of tipAcces" fxFlex="24%">
+                <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                  <mat-card-header fxFlex fxLayoutAlign="center center">
+                    <mat-card-title>
+                      {{elem.modalitate_acces}}
+                    </mat-card-title>
+                  </mat-card-header>
+                  <mat-card-actions fxLayoutAlign="center center">
+                    <button mat-button color="primary" fxFlex (click)="SelectTipAcces(elem)">
+                      Filtreaza
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="configurariTipAccesAccordionOpened == 2"
+            (opened)="configurariTipAccesAccordionOpened = 2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Configurare tip acces
+              </mat-panel-title>
+              <mat-panel-description>
+                Toate tipurile de configurari tip acces.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxFlex fxLayout="column">
+              <div fxFlex>
+                <h1 class="text-center">
+                  Tip acces: {{tipAccesSelected.modalitate_acces}}
+                </h1>
+              </div>
+              <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+                <div class="mb-3" *ngFor="let elem of configurariTipAcces" fxFlex="24%">
+                  <mat-card class="new-event-card tip-eveniment-card mat-elevation-z3" fxLayout="column">
+                    <mat-card-header fxFlex fxLayoutAlign="center center">
+                      <mat-card-title>
+                        {{elem.denumire_configurare_acces}}
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content fxFlex fxLayout="column" fxLayoutGap="3px">
+                      <div fxFlex="100">
+                        <b>Categorie:</b> {{elem.modalitate_acces}}
+                      </div>
+                      <div fxFlex="100">
+                        <b>Cost realizare:</b> {{elem.cost_realizare}}
+                      </div>
+                    </mat-card-content>
+                    <mat-card-actions fxLayoutAlign="center center" fxLayout="column">
+                      <button mat-button color="primary" fxFlex (click)="AddConfigurariTipAcces(elem)">
+                        Adauga
+                      </button>
+                    </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="configurariTipAccesAccordionOpened == 3"
+            (opened)="configurariTipAccesAccordionOpened = 3">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Configurari tip acces selectate
+              </mat-panel-title>
+              <mat-panel-description>
+                Configurari tip acces selectate pentru evenimentul dumneavostra.
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+
+              <table mat-table fxFlex [dataSource]="dataSourceConfigurariTipAcces" matSort>
+
+                <ng-container matColumnDef="denumire_configurare_acces">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Denumire </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.configurariTipAcces.denumire_configurare_acces}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cost_realizare">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost realizare </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.configurariTipAcces.cost_realizare | number}} lei
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cantitate_acces">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cantitate </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces)">
+                      {{element.cantitate_acces | number}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces">
+                      <input matInput type="number" placeholder="Cantitate*"
+                        [(ngModel)]="editItemConfigurariTipAcces.cantitate_acces">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pret_acces">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret acces </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces)">
+                      {{element.pret_acces | number}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces">
+                      <input matInput type="number" placeholder="Pret acces"
+                        [(ngModel)]="editItemConfigurariTipAcces.pret_acces">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="discount_avans">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Discount avans </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces)">
+                      {{element.discount_avans | number}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces">
+                      <input matInput type="number" placeholder="Discount avans"
+                        [(ngModel)]="editItemConfigurariTipAcces.discount_avans">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="discount_student">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Discount student </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces)">
+                      {{element.discount_student | number}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces">
+                      <input matInput type="number" placeholder="Discount student"
+                        [(ngModel)]="editItemConfigurariTipAcces.discount_student">
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="data_inceput_vanzare">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Data inceput vanzare
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces)">
+                      {{element.data_inceput_vanzare | date:'dd/MM/yyyy'}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces">
+                      <input matInput [matDatepicker]="picker_acces_inceput" readonly placeholder="Data inceput vanzare"
+                        [(ngModel)]="editItemConfigurariTipAcces.data_inceput_vanzare">
+                      <mat-datepicker-toggle matSuffix [for]="picker_acces_inceput"></mat-datepicker-toggle>
+                      <mat-datepicker #picker_acces_inceput></mat-datepicker>
+                    </mat-form-field>
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="data_final_vanzare">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Discount final vanzare
+                  </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    <div
+                      *ngIf="!(element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces)">
+                      {{element.data_final_vanzare | date:'dd/MM/yyyy'}}
+                    </div>
+
+                    <mat-form-field class="w-100"
+                      *ngIf="element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces">
+                      <input matInput [matDatepicker]="picker_acces_final" readonly placeholder="Data final vanzare"
+                        [(ngModel)]="editItemConfigurariTipAcces.data_final_vanzare">
+                      <mat-datepicker-toggle matSuffix [for]="picker_acces_final"></mat-datepicker-toggle>
+                      <mat-datepicker #picker_acces_final></mat-datepicker>
+                    </mat-form-field>
+
+
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="cost_realizare_total">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost total </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element">
+                    {{element.cost_realizare_total | number}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+                    <div
+                      *ngIf="!(element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces)">
+                      <button mat-button color="warn" (click)="DeleteConfigurariTipAccesEveniment(element)"
+                        matTooltip="Sterge">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="EditConfigurariTipAccesEveniment(element)"
+                        matTooltip="Editeaza">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                    <div
+                      *ngIf="element.configurariTipAcces.id_configurari_acces == editItemConfigurariTipAcces?.configurariTipAcces?.id_configurari_acces">
+                      <button mat-button color="warn" (click)="RenuntaEditConfigurariTipAcces(element)"
+                        matTooltip="Renunta">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="ConfirmEditConfigurariTipAcces()" matTooltip="Salveaza">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row mat-header-row *matHeaderRowDef="displayedColumnsConfigurariTipAcces"></mat-header-row>
+                <mat-row mat-row *matRowDef="let row; columns: displayedColumnsConfigurariTipAcces;"></mat-row>
+
+
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+        <div>
+          <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+          <button mat-button color="primary" (click)="CheckConfigurariTipAcces()">Urmatorul pas</button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Finalizare creare eveniment</ng-template>
+      <h1 fxLayoutAlign="center center" class="text-center">
+        Felicitari, ai configurat toate campurile necesare, apasa pe butonul de salvare si asteapta raspunsul de
+        confirmare!
+      </h1>
+      <div fxLayoutAlign="center center">
+        <button mat-button color="warn" matStepperPrevious>Inapoi</button>
+        <button mat-button color="primary" (click)="SaveEvenimentOrganizat()">Creeaza eveniment</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+
+</div>

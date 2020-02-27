@@ -1,0 +1,82 @@
+<div class="p-2" fxLayout="row">
+  <mat-form-field fxFlex>
+    <input matInput placeholder="Filtreaza" (keyup)="applyFilter($event.target.value)">
+  </mat-form-field>
+  <div fxFlex="2 2 calc(10em + 10px)"></div>
+  <div fxFlex fxLayoutAlign="end center">
+    <button mat-button color="accent" (click)="AddElementeDesign()">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+  </div>
+</div>
+
+<div class="mat-elevation-z8 m-2" fxLayout="column" gallerize>
+  <table mat-table fxFlex [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="id_element_design">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.id_element_design}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nume_element">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nume element </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.nume_element}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="culoare">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Culoare </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.culoare}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cantitate">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cantitate </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.cantitate | number}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dimensiuni">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Dimensiuni </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.dimensiuni}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="pret_per_element">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret pe element </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.pret_per_element | number}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="discount">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Discount </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.discount | number}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="numar_minim_elemente_pentru_reducere">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Numar minim elemente pt. reducere </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.numar_minim_elemente_pentru_reducere}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="imagine_element_design_src">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Imagine </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element">
+        <img *ngIf="element.imagine_element_design_src" class="imagine-element" [src]="element.imagine_element_design_src">
+      </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+        <button mat-button color="warn" (click)="DeleteElementeDesign(element)">
+          <mat-icon>delete</mat-icon>Sterge
+        </button>
+        <button mat-button color="primary" (click)="EditElementeDesign(element)">
+          <mat-icon>edit</mat-icon>Editeaza
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+</div>

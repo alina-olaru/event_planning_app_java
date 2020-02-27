@@ -1,0 +1,28 @@
+.new-event-card{
+  min-height: 100px;
+  height: 100%;
+  cursor: pointer;
+  .mat-card-header{
+    justify-content: center;
+    .mat-card-title{
+      text-align: center;
+    }
+  }
+}
+
+.new-event-card.selected{
+  background-color: #eee;
+
+}
+
+.tip-eveniment-card{
+  min-height: 92px;
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 0px 2px;
+}

@@ -1,0 +1,55 @@
+<h1 mat-dialog-title fxLayoutAlign="center center">
+  <span *ngIf="data.type=='add'">
+    Adauga tip locatie
+  </span>
+  <span *ngIf="data.type=='edit'">
+    Editeaza
+  </span>
+</h1>
+<form fxLayout="column" [formGroup]="localForm" (ngSubmit)="SubmitForm()">
+  <div mat-dialog-content class="example-container" fxLayout="column">
+    <div class="input-row" *ngIf="data.type=='edit'">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Id" formControlName="id_tip_locatie">
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Nume*" formControlName="nume_categorie_locatie">
+        <mat-error *ngIf="form.nume_categorie_locatie?.invalid">
+          Numele este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <textarea rows="3" matInput placeholder="Descriere" formControlName="descriere"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex class="file-field">
+        <mat-icon matPrefix matTooltip="Sterge fisier!" (click)="DeleteFile()">close</mat-icon>
+        <input type="tel" matInput disabled placeholder="Imagine tip locatie" [(ngModel)]="fileName" [ngModelOptions]="{standalone: true}">
+        <mat-icon matSuffix (click)="UploadFile()" matTooltip="Incarca fisier!">file_upload</mat-icon>
+        <input type="file" id="modal-file-upload-input" accept="image/*" style="visibility: hidden;display: none;" >
+      </mat-form-field>
+    </div>
+    <div class="input-row" [hidden]="!fileName">
+      <div class="img-output">
+        <img [src]="this.data.model.imagine_tip_locatie_src" [hidden]="!this.data.model.imagine_tip_locatie_src" class="img-fluid">
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='add'">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='edit'">
+      <mat-icon>save</mat-icon> Salveaza
+    </button>
+    <button mat-button color="warn" type="button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon> Renunta
+    </button>
+  </div>
+
+</form>

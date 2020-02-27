@@ -1,0 +1,75 @@
+<div class="container full-vh">
+  <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="1 1 auto" fxLayout="row">
+      <div fxFlex></div>
+      <div fxFlex>
+        <mat-card class="register-card mat-elevation-z5">
+          <mat-card-header class="mb-4">
+            <mat-card-title class="text-center">
+              Inregistrare
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form fxLayout="column" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+              <mat-form-field>
+                <input matInput placeholder="Nume*" formControlName="nume">
+                <mat-error *ngIf="form.nume?.invalid">
+                  Numele este obligatoriu
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="example-full-width mb-3">
+                <input matInput placeholder="Prenume*"
+                formControlName="prenume">
+                <mat-error *ngIf="form.prenume?.invalid">
+                  Prenumele este obligatorie
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Numar telefon*" formControlName="numar_telefon">
+                <mat-error *ngIf="form.numar_telefon?.invalid">
+                  Numarul de telefon este obligatoriu
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Email*"
+                formControlName="adresa_mail">
+                <mat-error *ngIf="form.numar_telefon?.errors?.required">
+                  Email-ul este obligatoriu
+                </mat-error>
+                <mat-error *ngIf="form.adresa_mail?.errors?.email">
+                  Adresa de mail trebuie sa fie o adresa valida
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Utilizator*" formControlName="username">
+                <mat-error *ngIf="form.username?.invalid">
+                  Numele utilizatorului este obligatoriu
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Parola*"
+                type="password"
+                formControlName="parola">
+                <mat-error *ngIf="form.parola?.invalid"> Parola este obligatorie </mat-error>
+              </mat-form-field>
+              <mat-form-field class="example-full-width mb-3">
+                <input matInput placeholder="Confirma parola*"
+                type="password"
+                formControlName="confirma_parola">
+                <mat-error *ngIf="form.confirma_parola?.errors?.required"> Confirmarea parolei este obligatorie </mat-error>
+                <mat-error *ngIf="form.confirma_parola?.errors?.mustMatch"> Confirmarea parolei trebuie sa fie aceeasi cu cea de mai sus </mat-error>
+              </mat-form-field>
+              <div fxFlex class="mb-2">
+                <button fxFlex mat-raised-button color="primary" type="submit">
+                  Inregistreaza-te
+                </button>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex></div>
+    </div>
+
+  </div>
+</div>

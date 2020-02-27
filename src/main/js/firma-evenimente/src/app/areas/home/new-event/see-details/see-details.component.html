@@ -1,0 +1,16 @@
+<h1 mat-dialog-title fxLayoutAlign="center center">
+  {{data.title}}
+</h1>
+<div mat-dialog-content class="example-container" fxLayout="column">
+  <div class="" fxFlex>
+    <img class="img-fluid mb-3" fxFlex [src]="data.image">
+  </div>
+  <div fxFlex>
+    {{data.description}}
+  </div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+  <button mat-button color="warn" (click)="onNoClick()">
+      <mat-icon>close</mat-icon> Renunta
+  </button>
+</div>

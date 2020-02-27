@@ -1,0 +1,69 @@
+<h1 mat-dialog-title fxLayoutAlign="center center">
+  <span *ngIf="data.type=='add'">
+    Adauga moment artistic
+  </span>
+  <span *ngIf="data.type=='edit'">
+    Editeaza
+  </span>
+</h1>
+<form fxLayout="column" [formGroup]="localForm" (ngSubmit)="SubmitForm()">
+  <div mat-dialog-content class="example-container" fxLayout="column">
+    <div class="input-row" *ngIf="data.type=='edit'">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Id" formControlName="id_moment_artistic">
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input type="text" placeholder="Tip moment*" matInput formControlName="tip_moment" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option.nume_categorie_moment_artistic}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.tip_moment?.invalid">
+          Tipul de moment artistic este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Nume moment*" formControlName="nume_tip_moment_artistic">
+        <mat-error *ngIf="form.nume_tip_moment_artistic?.invalid">
+          Numele este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Timp moment(minute)" formControlName="timp_moment" type="number">
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Pret*" formControlName="pret_per_moment" type="number">
+        <mat-error *ngIf="form.pret_per_moment?.invalid">
+          Pretul este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Numar persoane implicate" formControlName="numar_persoane_implicate">
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='add'">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='edit'">
+      <mat-icon>save</mat-icon> Salveaza
+    </button>
+    <button mat-button color="warn" type="button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon> Renunta
+    </button>
+  </div>
+
+</form>

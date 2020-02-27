@@ -1,0 +1,79 @@
+<div class="p-2" fxLayout="row">
+  <mat-form-field fxFlex>
+    <input matInput placeholder="Filtreaza" (keyup)="applyFilter($event.target.value)">
+  </mat-form-field>
+  <div fxFlex="2 2 calc(10em + 10px)"></div>
+  <div fxFlex fxLayoutAlign="end center">
+    <button mat-button color="accent" (click)="AddUtilizator()">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+  </div>
+</div>
+
+<div class="mat-elevation-z8 m-2" fxLayout="column">
+  <table mat-table fxFlex [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="id_utilizator">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.id_utilizator}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nume">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nume </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.nume}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="prenume">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Prenume </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.prenume}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="numar_telefon">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Numar telefon </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.numar_telefon}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="adresa_mail">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Mail </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.adresa_mail}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="numar_evenimente_create">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Numar evenimente </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.numar_evenimente_create | number}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Utilizator </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="parola">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Parola </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.parola}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rol">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Rol </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.rol}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+        <button mat-button color="warn" (click)="DeleteUtilizator(element)">
+          <mat-icon>delete</mat-icon>Sterge
+        </button>
+        <button mat-button color="primary" (click)="EditUtilizator(element)">
+          <mat-icon>edit</mat-icon>Editeaza
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,55 @@
+<div class="p-2" fxLayout="row">
+  <mat-form-field fxFlex>
+    <input matInput placeholder="Filtreaza" (keyup)="applyFilter($event.target.value)">
+  </mat-form-field>
+  <div fxFlex="2 2 calc(10em + 10px)"></div>
+  <div fxFlex fxLayoutAlign="end center">
+    <button mat-button color="accent" (click)="AddConfigurariTipAcces()">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+  </div>
+</div>
+
+<div class="mat-elevation-z8 m-2" fxLayout="column">
+  <table mat-table fxFlex [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="id_configurari_acces">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.id_configurari_acces}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="denumire_configurare_acces">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nume configurare </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.denumire_configurare_acces}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="modalitate_acces">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Tip acces </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.modalitate_acces}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cost_realizare">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost realizare </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.cost_realizare | number}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+        <button mat-button color="warn" (click)="DeleteConfigurariTipAcces(element)">
+          <mat-icon>delete</mat-icon>Sterge
+        </button>
+        <button mat-button color="primary" (click)="EditConfigurariTipAcces(element)">
+          <mat-icon>edit</mat-icon>Editeaza
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+</div>

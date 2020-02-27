@@ -1,11 +1,9 @@
-export class User{
-  ID_UTILIZATOR:number;
-  ID_NIVEL_ACCES:number;
-  NUME:string;
-  PRENUME:string;
-  NUMAR_TELEFON:string;
-  ADRESA_MAIL:string;
-  NUMAR_EVENIMENTE_CREATE:string;
-  USERNAME:string;
-  PAROLA:string
+export class User {
+  id_utilizator: number;
+  id_nivel_acces: number;
+  nume: string;
+  prenume: string;
+  numar_telefon: string;
+  adresa_email: string;
+  numar_evenimente_create: string;
 }

@@ -1,0 +1,141 @@
+<div class="container-fluid p-0 full-vh" fxFlex fxLayout="column">
+  <mat-drawer-container class="example-container" fxFlex fxLayout="row wrap" autosize>
+    <mat-drawer mode="side" opened fxFlex="10" style="width: 10%;">
+      <div class="" fxFlex fxLayout="column" fxLayoutGap="0" style="width: 100%;">
+        <div class="sidebar-title" fxLayoutAlign="center center">
+          <div class="mat-h1 mb-0">
+            Events - Admin
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-action-list class="p-2">
+          <button mat-list-item routerLink='/admin/tip-utilizatori' [routerLinkActive]="['route-ling-selected']"
+            matTooltip="Tip utilizatori" [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faUserCog"></fa-icon>
+            <span mat-line>Tip utilizatori</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','utilizatori']" matTooltip="Utilizatori"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faUsers"></fa-icon>
+            <span mat-line>Utilizatori</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','bautura']" matTooltip="Bautura" [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faGlassCheers"></fa-icon>
+            <span mat-line>Bautura</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','elemente-design']" matTooltip="Elemente design"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faUmbrellaBeach"></fa-icon>
+            <span mat-line>Elemente design</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-locatie']" matTooltip="Tip locatie"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faMapMarkedAlt"></fa-icon>
+            <span mat-line>Tip locatie</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','sub-locatie']" matTooltip="Sub-locatie"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faGlobeEurope"></fa-icon>
+            <span mat-line>Sub-locatie</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','locatie']" matTooltip="Locatie" [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faMapPin "></fa-icon>
+            <span mat-line>Locatie</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-media']" matTooltip="Tip media"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faIcons"></fa-icon>
+            <span mat-line>Tip media</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','media']" matTooltip="Media" [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faCamera"></fa-icon>
+            <span mat-line>Media</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-moment-artistic']" matTooltip="Tip moment artistic"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faMagic"></fa-icon>
+            <span mat-line>Tip moment artistic</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','momente-artistice']" matTooltip="Momente artistice"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faPaintBrush"></fa-icon>
+            <span mat-line>Momente artistice</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-servire-meniu']" matTooltip="Tip servire meniu"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faUtensils"></fa-icon>
+            <span mat-line>Tip servire meniu</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-meniu']" matTooltip="Tip meniu"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faClipboardList"></fa-icon>
+            <span mat-line>Tip meniu</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','componenta-meniu']" matTooltip="Componenta meniu"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faDrumstickBite"></fa-icon>
+            <span mat-line>Componenta meniu</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-eveniment']" matTooltip="Tip eveniment"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faChessRook"></fa-icon>
+            <span mat-line>Tip eveniment</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','sub-tip-eveniment']" matTooltip="Sub-eveniment"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faGlassMartini"></fa-icon>
+            <span mat-line>Sub-eveniment</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-acces']" matTooltip="Tip acces eveniment"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faTicketAlt"></fa-icon>
+            <span mat-line>Tip acces eveniment</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','configurari-tip-acces']"
+            matTooltip="Configurari tip acces eveniment" [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faDungeon"></fa-icon>
+            <span mat-line>Configurari tip acces eveniment</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-acces-sub-eveniment']" matTooltip="Tip acces sub-eveniment"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faListAlt"></fa-icon>
+            <span mat-line>Tip acces sub-eveniment</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','tip-locatie-sub-eveniment']" matTooltip="Tip locatie sub-eveniment"
+            [matTooltipPosition]="'right'">
+            <fa-icon mat-list-icon [icon]="faLandmark"></fa-icon>
+            <span mat-line>Tip locatie sub-eveniment</span>
+          </button>
+          <button mat-list-item [routerLink]="['/admin','organizatori']" matTooltip="Organizatori"
+          [matTooltipPosition]="'right'">
+          <fa-icon mat-list-icon [icon]="faUsersCog"></fa-icon>
+          <span mat-line>Organizatori</span>
+        </button>
+        </mat-action-list>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content fxFlex="90">
+      <mat-toolbar class="mat-elevation-z1">
+        <mat-toolbar-row>
+          <div *ngIf="loaded">
+            <fa-icon [icon]="icon" class="mr-2"></fa-icon>
+            <span>{{title.title}}</span>
+          </div>
+          <span class="example-spacer"></span>
+          <span>
+            <fa-icon mat-list-icon [icon]="faUserCircle" size="lg"
+            matTooltip="{{user.nume}} {{user.prenume}}"  [matTooltipPosition]="'left'"
+            mat-icon-button [matMenuTriggerFor]="menu"></fa-icon>
+            <mat-menu #menu="matMenu">
+              <!-- <button mat-menu-item>Settings</button> -->
+              <button mat-menu-item (click)="LogOut()">
+                Deconectare
+              </button>
+            </mat-menu>
+          </span>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

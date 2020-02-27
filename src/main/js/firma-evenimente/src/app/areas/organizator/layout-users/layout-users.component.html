@@ -1,0 +1,24 @@
+<div class="container-fluid p-0 full-vh" fxFlex fxLayout="column" class="home-wrapper">
+  <mat-toolbar class="page-toolbar mat-elevation-z1">
+    <mat-toolbar-row class="container">
+      <span>
+        <fa-icon mat-list-icon [icon]="faCalendarCheck"></fa-icon>
+        Event Planer - organizatori
+      </span>
+      <span class="example-spacer"></span>
+      <fa-icon mat-list-icon [icon]="faUserCircle" size="lg" mat-icon-button [matMenuTriggerFor]="menu"
+        matTooltip="{{user.nume}} {{user.prenume}}" [matTooltipPosition]="'left'"></fa-icon>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="GoToUseri()">
+          Utilizatori
+        </button>
+        <button mat-menu-item (click)="LogOut()">
+          Deconectare
+        </button>
+      </mat-menu>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div class="main-content" fxFlex flexLayout="column">
+    <router-outlet></router-outlet>
+  </div>
+</div>

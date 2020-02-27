@@ -1,0 +1,136 @@
+<div class="mr-4 mt-4" fxFlex fxLayout="row">
+  <div class="mx-4" fxFlex="20" fxLayout="column" fxLayoutGap="10px">
+    <div>
+      <h2 class="text-center">
+        Top tipuri evenimente create
+      </h2>
+    </div>
+    <div>
+      <mat-form-field fxFlex>
+        <input class="mr-2" type="number" matInput placeholder="Minim evenimente create" [(ngModel)]="minimEvenimenteCreate">
+        <mat-icon matSuffix (click)="LoadTop()" style="cursor: pointer;">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div *ngFor="let tp of top; let i = index">
+     <mat-card>
+        <h3>
+          {{i+1}}. {{tp.nume_categorie_sub_eveniment}} <span class="float-right">{{tp.numar_evenimente}} {{tp.numar_evenimente == 1 ? 'eveniment' : 'evenimente'}}</span>
+        </h3>
+     </mat-card>
+    </div>
+
+  </div>
+  <div class="" fxFlex fxLayout="column" fxLayoutGap="20px">
+    <div fxFlex fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field fxFlex="20%">
+        <input type="number" matInput [(ngModel)]="minValueFilter" placeholder="Valoare minima cost total">
+      </mat-form-field>
+      <mat-form-field fxFlex="20%">
+        <input type="number" matInput [(ngModel)]="maxValueFilter" placeholder="Valoare maxima cost total">
+      </mat-form-field>
+      <div>
+        <button mat-button (click)="GetEvenimente()">
+          Cauta
+        </button>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="p-2" fxLayout="row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Filtreaza" (keyup)="applyFilter($event.target.value)">
+      </mat-form-field>
+      <div fxFlex="2 2 calc(10em + 10px)"></div>
+      <!-- <div fxFlex fxLayoutAlign="end center">
+        <button mat-button color="accent" (click)="AddUtilizator()">
+          <mat-icon>add</mat-icon> Adauga
+        </button>
+      </div> -->
+    </div>
+
+    <div class="mat-elevation-z8 m-2" fxLayout="column">
+      <table mat-table fxFlex [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="id_eveniment">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.id_eveniment}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="data_inceput_eveniment">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Data inceput </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.data_inceput_eveniment | date:'dd/MM/yyyy'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="data_sfarsit_eveniment">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Data sfarsit </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.data_sfarsit_eveniment | date:'dd/MM/yyyy'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="mentiuni">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Mentiuni </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element">
+            <span matTooltip="{{element.mentiuni}}">{{element.mentiuni | truncate:50}}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nume_categorie_sub_eveniment">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Tip eveniment </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.nume_categorie_sub_eveniment}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nume_locatie">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Locatie </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element">
+            <span matTooltip="Tara: {{element.tara}} - Oras: {{element.oras}}">{{element.nume_locatie}}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_acces">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost acces </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.cost_acces | number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_bautura">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost bautura </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.cost_bautura | number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_elemente_design">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost elemente design </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.cost_elemente_design | number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_media">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost media </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.cost_media | number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_meniu">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost meniu </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.cost_meniu | number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_momente_artistice">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost momente artistice </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> {{element.cost_momente_artistice | number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_total_eveniment">
+          <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Cost total eveniment </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let element"> <b>{{element.cost_total_eveniment | number}}</b> </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+    </div>
+
+  </div>
+</div>

@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1500px
+) !default;
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities";
+
+html, body, app-root {
+  height: 100%;
+  height: 100vh;
+}
+
+.full-vh{
+  height: 100vh;
+}
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.route-ling-selected{
+  background: #efefef;
+}
+
+.file-field .mat-icon{
+  cursor: pointer;
+}
+
+.img-output{
+  img{
+    max-width: 100%;
+    height: auto;
+  }
+
+}

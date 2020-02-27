@@ -1,0 +1,49 @@
+<h1 mat-dialog-title fxLayoutAlign="center center">
+  <span *ngIf="data.type=='add'">
+    Adauga tip acces sub-eveniment
+  </span>
+  <span *ngIf="data.type=='edit'">
+    Editeaza
+  </span>
+</h1>
+<form fxLayout="column" [formGroup]="localForm" (ngSubmit)="SubmitForm()">
+  <div mat-dialog-content class="example-container" fxLayout="column">
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input type="text" placeholder="Tip acces*" matInput formControlName="tip_acces" [matAutocomplete]="auto_first">
+        <mat-autocomplete #auto_first="matAutocomplete" [displayWith]="displayFnFirst">
+          <mat-option *ngFor="let option of filteredOptionsFirst | async" [value]="option">
+            {{option.modalitate_acces}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.tip_acces?.invalid">
+          Tipul de acces este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input type="text" placeholder="Tip sub-eveniment*" matInput formControlName="tip_sub_eveniment" [matAutocomplete]="auto_second">
+        <mat-autocomplete #auto_second="matAutocomplete" [displayWith]="displayFnSecond">
+          <mat-option *ngFor="let option of filteredOptionsSecond | async" [value]="option">
+            {{option.nume_categorie_sub_eveniment}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.tip_sub_eveniment?.invalid">
+          Tipul de sub-eveniment este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='add'">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='edit'">
+      <mat-icon>save</mat-icon> Salveaza
+    </button>
+    <button mat-button color="warn" type="button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon> Renunta
+    </button>
+  </div>
+</form>

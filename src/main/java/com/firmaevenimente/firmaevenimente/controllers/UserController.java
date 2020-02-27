@@ -1,36 +1,34 @@
 package com.firmaevenimente.firmaevenimente.controllers;
 
-import com.firmaevenimente.firmaevenimente.models.User;
-import com.firmaevenimente.firmaevenimente.repositories.TestRepos;
-import com.firmaevenimente.firmaevenimente.repositories.UserRepos;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.firmaevenimente.firmaevenimente.models.autentificare.LoginUserModel;
+import com.firmaevenimente.firmaevenimente.models.autentificare.RegisterUserModel;
+import com.firmaevenimente.firmaevenimente.models.autentificare.User;
+import com.firmaevenimente.firmaevenimente.repositories.UserRepository;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/api/user")
 public class UserController {
 
 
     final
-    UserRepos userRepos;
+    UserRepository userRepository;
 
-    public UserController(UserRepos userRepos) {
-        this.userRepos = userRepos;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @GetMapping(path = "/login")
-    public List<User> get_info(@RequestParam String name) {
+    @PostMapping(path = "/login")
+    public User get_info(@RequestBody LoginUserModel userModel) {
 
-        List<User> list = userRepos.findInfo(name);
-        return list;
+        return userRepository.loginUser(userModel);
+    }
+
+    @PostMapping(path="/register")
+    public  User post_user(@RequestBody RegisterUserModel userModel){
+        return userRepository.registerUser(userModel);
     }
 }
 

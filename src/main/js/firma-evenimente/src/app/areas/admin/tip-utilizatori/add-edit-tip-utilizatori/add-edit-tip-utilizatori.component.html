@@ -1,0 +1,31 @@
+<h1 mat-dialog-title fxLayoutAlign="center center">
+  <span *ngIf="data.type=='add'">
+      Adauga tip utilizator
+  </span>
+  <span *ngIf="data.type=='edit'">
+      Editeaza
+  </span>
+</h1>
+<div mat-dialog-content class="example-container" fxLayout="column">
+  <div class="input-row" *ngIf="data.type=='edit'">
+      <mat-form-field fxFlex>
+          <input matInput placeholder="Id" disabled [ngModel]="data.model.id_nivel_acces">
+      </mat-form-field>
+  </div>
+  <div class="input-row">
+      <mat-form-field fxFlex>
+          <input matInput placeholder="Rol" [(ngModel)]="data.model.rol">
+      </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+  <button mat-button color="primary" [mat-dialog-close]="data" cdkFocusInitial *ngIf="data.type=='add'">
+      <mat-icon>add</mat-icon> Adauga
+  </button>
+  <button mat-button color="primary" [mat-dialog-close]="data" cdkFocusInitial *ngIf="data.type=='edit'">
+      <mat-icon>save</mat-icon> Salveaza
+  </button>
+  <button mat-button color="warn" (click)="onNoClick()">
+      <mat-icon>close</mat-icon> Renunta
+  </button>
+</div>

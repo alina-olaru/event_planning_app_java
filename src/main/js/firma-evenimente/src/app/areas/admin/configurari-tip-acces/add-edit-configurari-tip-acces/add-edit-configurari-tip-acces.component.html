@@ -1,0 +1,60 @@
+<h1 mat-dialog-title fxLayoutAlign="center center">
+  <span *ngIf="data.type=='add'">
+    Adauga configurare tip acces
+  </span>
+  <span *ngIf="data.type=='edit'">
+    Editeaza
+  </span>
+</h1>
+<form fxLayout="column" [formGroup]="localForm" (ngSubmit)="SubmitForm()">
+  <div mat-dialog-content class="example-container" fxLayout="column">
+    <div class="input-row" *ngIf="data.type=='edit'">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Id" formControlName="id_configurari_acces">
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input type="text" placeholder="Tip moment*" matInput formControlName="tip_acces" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option.modalitate_acces}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.tip_acces?.invalid">
+          Tipul de acces este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Nume acces*" formControlName="denumire_configurare_acces">
+        <mat-error *ngIf="form.denumire_configurare_acces?.invalid">
+          Numele este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Cost realizare*" formControlName="cost_realizare" type="number">
+        <mat-error *ngIf="form.cost_realizare?.invalid">
+          Costul de realizare este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='add'">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='edit'">
+      <mat-icon>save</mat-icon> Salveaza
+    </button>
+    <button mat-button color="warn" type="button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon> Renunta
+    </button>
+  </div>
+
+</form>

@@ -1,0 +1,93 @@
+<div class="p-2" fxLayout="row">
+  <mat-form-field fxFlex>
+    <input matInput placeholder="Filtreaza" (keyup)="applyFilter($event.target.value)">
+  </mat-form-field>
+  <div fxFlex="2 2 calc(10em + 10px)"></div>
+  <div fxFlex fxLayoutAlign="end center">
+    <button mat-button color="accent" (click)="AddLocatie()">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+  </div>
+</div>
+
+<div class="mat-elevation-z8 m-2" fxLayout="column" gallerize>
+  <table mat-table fxFlex [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="id_locatie">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.id_locatie}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nume_locatie">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nume locatie </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.nume_locatie}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nume_categorie_tip_locatie">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Tip sub-locatie asociat </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.nume_categorie_tip_locatie}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="tara">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Tara </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.tara}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="oras">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Oras </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.oras}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="adresa">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Adresa </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.adresa}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="strada">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Strada </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.strada}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dimensiune_mp">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Dimensiune mp. </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.dimensiune_mp | number}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="capacitate_maxima">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Capacitate maxima </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.capacitate_maxima | number}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="pret_inchiriere_per_24h">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Pret 24h </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.pret_inchiriere_per_24h | number}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="imagine_locatie_src">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Imagine </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element">
+        <img *ngIf="element.imagine_locatie_src" class="imagine-tip-locatie" [src]="element.imagine_locatie_src">
+      </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element" fxLayoutAlign="end center">
+        <button mat-button color="warn" (click)="DeleteLocatie(element)">
+          <mat-icon>delete</mat-icon>Sterge
+        </button>
+        <button mat-button color="primary" (click)="EditLocatie(element)">
+          <mat-icon>edit</mat-icon>Editeaza
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+</div>

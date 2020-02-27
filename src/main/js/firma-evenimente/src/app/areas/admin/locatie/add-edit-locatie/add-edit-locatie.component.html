@@ -1,0 +1,113 @@
+<h1 mat-dialog-title fxLayoutAlign="center center">
+  <span *ngIf="data.type=='add'">
+    Adauga locatie
+  </span>
+  <span *ngIf="data.type=='edit'">
+    Editeaza
+  </span>
+</h1>
+<form fxLayout="column" [formGroup]="localForm" (ngSubmit)="SubmitForm()">
+  <div mat-dialog-content class="example-container" fxLayout="column">
+    <div class="input-row" *ngIf="data.type=='edit'">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Id" formControlName="id_locatie">
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input type="text" placeholder="Tip locatie*" matInput formControlName="sub_locatie" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option.nume_categorie_tip_locatie}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.sub_locatie?.invalid">
+          Tipul de sub-locatie este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Nume locatie*" formControlName="nume_locatie">
+        <mat-error *ngIf="form.nume_locatie?.invalid">
+          Numele este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Tara*" formControlName="tara">
+        <mat-error *ngIf="form.tara?.invalid">
+          Tara este obligatorie
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Oras*" formControlName="oras">
+        <mat-error *ngIf="form.oras?.invalid">
+          Orasul este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Adresa*" formControlName="adresa">
+        <mat-error *ngIf="form.adresa?.invalid">
+          Adresa este obligatorie
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Strada*" formControlName="strada">
+        <mat-error *ngIf="form.strada?.invalid">
+          Strada este obligatorie
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput type="number" placeholder="Dimensiune mp." formControlName="dimensiune_mp">
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput type="number" placeholder="Capacitate maxima." formControlName="capacitate_maxima">
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Pret inchiriere 24h*" formControlName="pret_inchiriere_per_24h">
+        <mat-error *ngIf="form.pret_inchiriere_per_24h?.invalid">
+          Pretul pentru inchirere 24h este obligatoriu
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="input-row">
+      <mat-form-field fxFlex class="file-field">
+        <mat-icon matPrefix matTooltip="Sterge fisier!" (click)="DeleteFile()">close</mat-icon>
+        <input type="tel" matInput disabled placeholder="Imagine tip locatie" [(ngModel)]="fileName" [ngModelOptions]="{standalone: true}">
+        <mat-icon matSuffix (click)="UploadFile()" matTooltip="Incarca fisier!">file_upload</mat-icon>
+        <input type="file" id="modal-file-upload-input" accept="image/*" style="visibility: hidden;display: none;" >
+      </mat-form-field>
+    </div>
+    <div class="input-row" [hidden]="!fileName">
+      <div class="img-output">
+        <img [src]="this.data.model.imagine_locatie_src" [hidden]="!this.data.model.imagine_locatie_src" class="img-fluid">
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='add'">
+      <mat-icon>add</mat-icon> Adauga
+    </button>
+    <button mat-button color="primary" type="submit" cdkFocusInitial *ngIf="data.type=='edit'">
+      <mat-icon>save</mat-icon> Salveaza
+    </button>
+    <button mat-button color="warn" type="button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon> Renunta
+    </button>
+  </div>
+
+</form>
